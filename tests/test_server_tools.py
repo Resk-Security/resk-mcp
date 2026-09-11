@@ -18,6 +18,12 @@ TEST_TOKEN = None  # Will be set in fixture
 
 def extract_value(result):
     """Extract the actual value from MCP result objects."""
+    # mcp >= 1.10 returns a (content, structured) tuple from call_tool
+    if isinstance(result, tuple) and len(result) == 2:
+        structured = result[1]
+        if isinstance(structured, dict) and 'result' in structured:
+            return structured['result']
+        result = result[0]
     # Handle TextContent objects from LLM API
     if isinstance(result, list) and len(result) > 0 and hasattr(result[0], 'text'):
         return result[0].text

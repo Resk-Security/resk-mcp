@@ -5,6 +5,7 @@ from typing import Dict, Any, Callable, Tuple, Optional, List
 
 # from dotenv import load_dotenv # Handled by config.py now
 from fastapi import FastAPI, HTTPException, Depends, Request as FastAPIRequest
+from typing import Optional
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from pydantic import BaseModel, ValidationError as PydanticValidationError, field_validator
 from starlette.requests import Request as StarletteRequest # For slowapi key func
@@ -118,9 +119,17 @@ class RawMCPRequest(BaseModel):
             raise ValueError('Params must be an object')
         return v
 
+    @staticmethod
+    def _unwrap_tool_result(result):
+        """mcp >= 1.10 returns a (content, structured) tuple; keep the wire format stable."""
+        if isinstance(result, tuple) and len(result) == 2:
+            return result[0]
+        return result
+
 class SecureMCPServer(FastMCP):
     def __init__(self, name: str = "SecureMCPServer", title: str = "Secure MCP Server", **kwargs):
-        super().__init__(name=name, title=title, **kwargs)
+        # FastMCP (mcp >= 1.30) no longer accepts `title`; keep it as an instance attribute.
+        super().__init__(name=name, **kwargs)
         
         # Store title as an instance attribute
         self.title = title
@@ -357,7 +366,7 @@ class SecureMCPServer(FastMCP):
                     # Try with the base tool name (without "tool/" prefix)
                     result = await self.call_tool(tool_name, params)
                     self._increment_tool_counter(tool_name, method_name)
-                    return {"id": request_id, "result": result}
+                    return {"id": request_id, "result": self._unwrap_tool_result(result)}
                 except Exception as e:
                     # Log the error at debug level since we'll try other methods
                     logger.debug(f"call_tool failed with {tool_name}: {e}")
@@ -366,7 +375,7 @@ class SecureMCPServer(FastMCP):
                     try:
                         result = await self.call_tool(method_name, params)
                         self._increment_tool_counter(tool_name, method_name)
-                        return {"id": request_id, "result": result}
+                        return {"id": request_id, "result": self._unwrap_tool_result(result)}
                     except Exception as e2:
                         logger.debug(f"call_tool failed with {method_name}: {e2}")
                         # Continue to fallback mechanisms

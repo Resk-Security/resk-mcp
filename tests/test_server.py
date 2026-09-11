@@ -169,7 +169,8 @@ def test_resource_registration_and_counter(secure_server_instance):
 def test_mcp_secure_endpoint_no_auth(client):
     """Test MCP endpoint with no authorization header."""
     response = client.post("/mcp_secure", json={"method": "test/tool", "params": {}, "id": 1})
-    assert response.status_code == 403  # Forbidden without auth header
+    # FastAPI < 0.112 answers 403 (HTTPBearer default), newer answers 401.
+    assert response.status_code in (401, 403)
 
 def test_mcp_secure_endpoint_bad_token(client):
     """Test MCP endpoint with an invalid token."""
