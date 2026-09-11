@@ -1,7 +1,7 @@
 [project]
 name = "mcp-resk"
 version = "0.1.0"
-description = "RESK-MCP is an open-source Python library designed to add a robust security and management layer over the official MCP Library."
+description = "RESK-MCP is an open-source Python library designed to add a robust security and management layer over the official MCP Library. More at https://resk.fr"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
