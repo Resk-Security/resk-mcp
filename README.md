@@ -14,7 +14,9 @@
 [![PyPI - Implementation](https://img.shields.io/pypi/implementation/mcp-resk.svg)](https://pypi.org/project/mcp-resk/)
 [![LLM Security](https://img.shields.io/badge/LLM%20Security-Enhanced-brightgreen.svg)](https://github.com/Resk-Security/mcp-resk)
 
-🔗 Part of [RESK Security](https://resk.fr) — tools, blog and docs at [resk.fr](https://resk.fr)
+🔗 [resk.fr/projects/resk-mcp](https://resk.fr/projects/resk-mcp.html) — part of [RESK Security](https://resk.fr)
+
+📚 Guides: [MCP Security Integration](https://resk.fr/pages/security/mcp-security-integration.html) · [MCP Security: Protecting AI Agents](https://resk.fr/blog/mcp-security-ai-agents.html)
 
 RESK-MCP is an open-source Python library that adds a robust security and management layer over the official [Model Context Protocol (MCP) Python SDK](https://github.com/modelcontextprotocol/python-sdk). It provides enhanced security features, monitoring capabilities, and tools for managing MCP interactions.
 
