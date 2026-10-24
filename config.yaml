@@ -80,12 +80,13 @@ validation:
 dashboard:
   # Authentication for the dashboard
   auth:
-    # Enable authentication for dashboard
-    enabled: true
-    # Default username for dashboard access
+    # Enable authentication for dashboard. When enabled, DASHBOARD_PASSWORD
+    # (or dashboard.auth.password) MUST be set to a non-default value.
+    enabled: false
+    # Username for dashboard access (override with DASHBOARD_USERNAME)
     username: "admin"
-    # Default password for dashboard access
-    password: "admin"
+    # Never commit a real password here. Use DASHBOARD_PASSWORD instead.
+    password: ""
     # Session expiration time in minutes
     session_expire_minutes: 60
 

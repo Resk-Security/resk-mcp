@@ -4,6 +4,7 @@ from fastapi.responses import HTMLResponse, RedirectResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from pathlib import Path
 from typing import TYPE_CHECKING, Dict, Optional
+import hmac
 import secrets
 import time
 from datetime import datetime, timedelta
@@ -63,8 +64,13 @@ def setup_dashboard_routes(app: FastAPI, server_instance: 'SecureMCPServer'):
         password = data.get("password")
         
         # Check credentials
-        if (not settings.dashboard_auth_enabled or 
-            (username == settings.dashboard_username and password == settings.dashboard_password)):
+        credentials_ok = (
+            isinstance(username, str)
+            and isinstance(password, str)
+            and hmac.compare_digest(username, settings.dashboard_username)
+            and hmac.compare_digest(password, settings.dashboard_password)
+        )
+        if not settings.dashboard_auth_enabled or credentials_ok:
             # Create session
             session_id = secrets.token_hex(16)
             expire_time = time.time() + (settings.dashboard_session_expire_minutes * 60)

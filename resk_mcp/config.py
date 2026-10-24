@@ -16,6 +16,8 @@ class Settings:
         # Check for both "secret" and "JWT_SECRET" for backward compatibility
         self.jwt_secret: Optional[str] = os.getenv("JWT_SECRET") or jwt_config.get("secret") or jwt_config.get("JWT_SECRET")
         self.jwt_algorithm: str = os.getenv("JWT_ALGORITHM") or jwt_config.get("algorithm", "HS256")
+        if self.jwt_algorithm.lower() == "none":
+            raise ValueError("JWT_ALGORITHM=none is not allowed.")
         self.jwt_expiration_minutes: int = int(os.getenv("JWT_EXPIRATION_MINUTES") or jwt_config.get("expiration_minutes", 30))
 
         rate_limit_config = config_data.get("rate_limit", {})
@@ -42,10 +44,16 @@ class Settings:
             raise ValueError("JWT_SECRET is required. Set it in config.yaml under jwt.secret or as an environment variable.")
 
         # Nouvelle section pour l'authentification du dashboard
-        self.dashboard_auth_enabled: bool = config_data.get("dashboard", {}).get("auth", {}).get("enabled", False)
-        self.dashboard_username: str = config_data.get("dashboard", {}).get("auth", {}).get("username", "admin")
-        self.dashboard_password: str = config_data.get("dashboard", {}).get("auth", {}).get("password", "admin")
-        self.dashboard_session_expire_minutes: int = int(config_data.get("dashboard", {}).get("auth", {}).get("session_expire_minutes", 60))
+        dashboard_auth = config_data.get("dashboard", {}).get("auth", {})
+        self.dashboard_auth_enabled: bool = os.getenv("DASHBOARD_AUTH_ENABLED", str(dashboard_auth.get("enabled", False))).lower() in ("1", "true", "yes")
+        self.dashboard_username: str = os.getenv("DASHBOARD_USERNAME") or dashboard_auth.get("username", "admin")
+        self.dashboard_password: str = os.getenv("DASHBOARD_PASSWORD") or dashboard_auth.get("password", "")
+        self.dashboard_session_expire_minutes: int = int(dashboard_auth.get("session_expire_minutes", 60))
+        if self.dashboard_auth_enabled and (not self.dashboard_password or self.dashboard_password == "admin"):
+            raise ValueError(
+                "Dashboard authentication is enabled but no secure password is configured. "
+                "Set DASHBOARD_PASSWORD (or dashboard.auth.password) to a non-default value."
+            )
 
     def __repr__(self) -> str:
         return f"<Settings(jwt_secret='****', rate_limit='{self.rate_limit}', port={self.server_port})>"
