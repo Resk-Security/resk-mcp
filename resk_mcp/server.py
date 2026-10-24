@@ -127,6 +127,13 @@ class RawMCPRequest(BaseModel):
         return result
 
 class SecureMCPServer(FastMCP):
+    @staticmethod
+    def _unwrap_tool_result(result):
+        """Normalize MCP >= 1.10 (content, structured) results to the wire format."""
+        if isinstance(result, tuple) and len(result) == 2:
+            return result[0]
+        return result
+
     def __init__(self, name: str = "SecureMCPServer", title: str = "Secure MCP Server", **kwargs):
         # FastMCP (mcp >= 1.30) no longer accepts `title`; keep it as an instance attribute.
         super().__init__(name=name, **kwargs)
@@ -479,7 +486,7 @@ class SecureMCPServer(FastMCP):
                 logger.warning(f"Interaction tracking: Unknown element type in method name {mcp_method_name}")
 
     # Override FastMCP methods to track interactions
-    def tool(self, name: str | None = None, description: str | None = None, annotations: Optional[ToolAnnotations] = None, **kwargs) -> Callable:
+    def tool(self, name: str | None = None, description: str | None = None, annotations: Optional[ToolAnnotations] = None, **kwargs) -> Callable:  # type: ignore[override]
         """
         Register a tool function.
         
@@ -553,7 +560,7 @@ class SecureMCPServer(FastMCP):
             return processed_func
         return actual_decorator
 
-    def prompt(self, name: str | None = None, description: str | None = None, **kwargs) -> Callable:
+    def prompt(self, name: str | None = None, description: str | None = None, **kwargs) -> Callable:  # type: ignore[override]
         """
         Register a prompt function.
         

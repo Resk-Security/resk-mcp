@@ -19,7 +19,7 @@ router = APIRouter()
 
 # Simple session store - in a production app, use a proper session backend
 # Format: {"session_id": {"username": "user", "expires": timestamp}}
-sessions = {}
+sessions: dict[str, dict] = {}
 
 # This is a bit of a workaround to pass the server instance to the route
 # A more robust solution might involve FastAPI app state or dependency injection patterns
