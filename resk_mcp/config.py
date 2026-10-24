@@ -34,6 +34,10 @@ class Settings:
         self.server_port: int = int(os.getenv("SERVER_PORT") or server_config.get("port", 8001))
         self.ssl_keyfile: Optional[str] = os.getenv("SSL_KEYFILE") or server_config.get("ssl_keyfile")
         self.ssl_certfile: Optional[str] = os.getenv("SSL_CERTFILE") or server_config.get("ssl_certfile")
+        # Interactive API docs expose the full tool schema; off unless explicitly enabled.
+        self.docs_enabled: bool = os.getenv(
+            "RESK_MCP_DOCS", str(server_config.get("docs", False))
+        ).lower() in ("1", "true", "yes")
 
         # Logging
         logging_config = config_data.get("logging", {})

@@ -44,6 +44,8 @@ server:
   # Server listening port
   # 8001 is used to avoid conflicts with other common services
   port: 8001
+  # Interactive OpenAPI/Swagger docs. Keep false in production.
+  docs: false
   
   # SSL/TLS configuration for HTTPS - RECOMMENDED in production
   # Uncomment and specify paths to your certificates for HTTPS

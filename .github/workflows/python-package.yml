@@ -53,6 +53,9 @@ jobs:
       run: |
         uv run pytest -v
 
+    - name: Dependency audit
+      run: uv run --with pip-audit pip-audit --skip-editable
+
   build-and-publish:
     needs: test
     runs-on: ubuntu-latest

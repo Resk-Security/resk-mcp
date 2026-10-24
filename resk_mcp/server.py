@@ -150,8 +150,21 @@ class SecureMCPServer(FastMCP):
             self.secure_app = self.app
         else:
             # Create a new FastAPI app if MCP doesn't expose one
-            self.secure_app = FastAPI(title=f"{title} API", description=f"Secure API for {name}")
+            docs_enabled = settings.docs_enabled
+            self.secure_app = FastAPI(
+                title=f"{title} API",
+                description=f"Secure API for {name}",
+                docs_url="/docs" if docs_enabled else None,
+                redoc_url="/redoc" if docs_enabled else None,
+                openapi_url="/openapi.json" if docs_enabled else None,
+            )
             logger.info(f"Created new FastAPI app for {name} as MCP v1.9.0+ doesn't expose 'app' attribute")
+        if not settings.docs_enabled:
+            # Also cover apps created by FastMCP itself.
+            hidden = {"/docs", "/redoc", "/openapi.json", "/docs/oauth2-redirect"}
+            self.secure_app.routes[:] = [
+                route for route in self.secure_app.routes if getattr(route, "path", None) not in hidden
+            ]
             
         self.security_scheme = HTTPBearer()
         # Use settings for max_tokens
