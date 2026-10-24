@@ -54,7 +54,7 @@ jobs:
         uv run pytest -v
 
     - name: Dependency audit
-      run: uv run --with pip-audit pip-audit --skip-editable
+      run: uvx pip-audit --path .venv/lib/python*/site-packages --skip-editable
 
   build-and-publish:
     needs: test
