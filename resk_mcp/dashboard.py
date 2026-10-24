@@ -110,7 +110,8 @@ def setup_dashboard_routes(app: FastAPI, server_instance: 'SecureMCPServer'):
     # Authentication middleware function
     async def check_dashboard_auth(request: Request) -> Optional[Dict]:
         if not settings.dashboard_auth_enabled:
-            return {"username": "anonymous"}
+            # Fail closed: never expose agent interactions without authentication.
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Dashboard disabled")
             
         session_id = request.cookies.get("session_id")
         if not session_id or not is_valid_session(session_id):

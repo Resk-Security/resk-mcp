@@ -66,7 +66,7 @@ def test_settings():
         },
         "dashboard": {
             "auth": {
-                "enabled": False,  # Disable dashboard auth for tests
+                "enabled": True,
                 "username": "test",
                 "password": "test",
                 "session_expire_minutes": 60
@@ -110,7 +110,7 @@ def secure_server_instance(test_settings, mocker):
     
     test_settings.rate_limit = "2/second"
     test_settings.max_token_per_request = 50
-    test_settings.dashboard_auth_enabled = False
+    test_settings.dashboard_auth_enabled = True
 
     server = SecureMCPServer(name="TestSecureServer")
     
@@ -390,6 +390,8 @@ def test_rate_limiting_fallback_to_ip(client):
 
 def test_dashboard_html_route(client):
     """Test the dashboard HTML endpoint."""
+    login = client.post("/api/dashboard/auth/login", json={"username": "test", "password": "test"})
+    assert login.status_code == 200
     response = client.get("/dashboard")
     assert response.status_code == 200
     assert "text/html" in response.headers["content-type"]
@@ -417,7 +419,9 @@ def test_dashboard_api_interactions_route(client, test_token, secure_server_inst
     # Ensure no error before proceeding to dashboard check
     assert "error" not in data, f"Tool call failed unexpectedly: {data.get('error')}"
 
-    # Now check the dashboard API
+    # Now check the dashboard API (authenticated)
+    login = client.post("/api/dashboard/auth/login", json={"username": "test", "password": "test"})
+    assert login.status_code == 200
     response = client.get("/api/dashboard/interactions")        
     assert response.status_code == 200
 
