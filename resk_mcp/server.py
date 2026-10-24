@@ -259,7 +259,7 @@ class SecureMCPServer(FastMCP):
                 return MCPErrorResponse.create(
                     request_id=request_data.id,
                     code=MCPErrorCodes.AUTH_ERROR,
-                    message=f"Invalid token: {str(e)}"
+                    message="Invalid or expired token"
                 )
             except ValueError as ve:
                 logger.critical(f"JWT configuration error: {str(ve)}")
