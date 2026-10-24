@@ -386,7 +386,7 @@ def test_rate_limiting_fallback_to_ip(client):
     data = response.json()
     assert "error" in data
     assert data["error"]["code"] == MCPErrorCodes.AUTH_ERROR
-    assert "Invalid token" in data["error"]["message"]
+    assert "Invalid or expired token" in data["error"]["message"]
 
 def test_dashboard_html_route(client):
     """Test the dashboard HTML endpoint."""
