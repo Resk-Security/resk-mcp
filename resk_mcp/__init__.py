@@ -1,6 +1,6 @@
 # resk_mcp/__init__.py
 
-__version__ = "0.1.0"
+__version__ = "0.1.4"
 
 from .server import SecureMCPServer
 from .auth import create_jwt_token, verify_jwt_token

@@ -7,7 +7,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="mcp-resk",
-    version="0.1.0",
+    version="0.1.4",
     author="RESK Team",
     author_email="contact@resk.fr",
     description="RESK-MCP is an open-source Python library designed to add a robust security and management layer over the official MCP Library.",
