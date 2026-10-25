@@ -27,7 +27,9 @@ sessions: dict[str, dict] = {}
 # For simplicity, we'll pass it during setup.
 
 def setup_dashboard_routes(app: FastAPI, server_instance: 'SecureMCPServer'):
-    base_path = Path(__file__).parent.parent # resk-mcp directoy, assuming static is a sibling
+    # Static assets ship inside the package (resk_mcp/static) so the dashboard
+    # works from an installed wheel, not only from a source checkout.
+    base_path = Path(__file__).parent
     static_files_path = base_path / "static"
 
     # Mount static files if the directory exists

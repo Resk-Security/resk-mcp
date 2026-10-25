@@ -7,7 +7,7 @@
 [![GitHub issues](https://img.shields.io/github/issues/Resk-Security/mcp-resk.svg)](https://github.com/Resk-Security/mcp-resk/issues)
 [![GitHub Stars](https://img.shields.io/github/stars/Resk-Security/mcp-resk?style=social)](https://github.com/Resk-Security/mcp-resk/stargazers)
 [![GitHub Forks](https://img.shields.io/github/forks/Resk-Security/mcp-resk?style=social)](https://github.com/Resk-Security/mcp-resk/network/members)
-[![Documentation Status](https://readthedocs.org/projects/mcp-resk/badge/?version=latest)](https://mcp-resk.readthedocs.io/en/latest/?badge=latest)
+[![Documentation](https://img.shields.io/badge/docs-resk.fr%2Fdocs%2Fresk--mcp-orange)](https://resk.fr/docs/resk-mcp/)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![security: bandit](https://img.shields.io/badge/security-bandit-yellow.svg)](https://github.com/PyCQA/bandit)
 [![GitHub last commit](https://img.shields.io/github/last-commit/Resk-Security/mcp-resk.svg)](https://github.com/Resk-Security/mcp-resk/commits/main)
@@ -15,6 +15,8 @@
 [![LLM Security](https://img.shields.io/badge/LLM%20Security-Enhanced-brightgreen.svg)](https://github.com/Resk-Security/mcp-resk)
 
 🔗 [resk.fr/projects/resk-mcp](https://resk.fr/projects/resk-mcp.html) — part of [RESK Security](https://resk.fr)
+
+📖 **Documentation: [resk.fr/docs/resk-mcp](https://resk.fr/docs/resk-mcp/)** — installation, configuration, security model, API reference and troubleshooting.
 
 📚 Guides: [MCP Security Integration](https://resk.fr/pages/security/mcp-security-integration.html) · [MCP Security: Protecting AI Agents](https://resk.fr/blog/mcp-security-ai-agents.html)
 
@@ -255,7 +257,7 @@ Access the analytics dashboard at `http://localhost:8001/dashboard`. It provides
 - Server configuration details
 - Lists of registered tools, resources, and prompts
 
-![Dashboard Server Info](static/images/dashboard-server-info.png)
+![Dashboard Server Info](resk_mcp/static/images/dashboard-server-info.png)
 
 ## Testing
 

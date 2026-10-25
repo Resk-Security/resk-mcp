@@ -5,4 +5,5 @@ include config.yaml.example
 global-exclude __pycache__
 global-exclude *.py[cod]
 global-exclude *.so
-global-exclude .git* 
+global-exclude .git*
+recursive-include resk_mcp/static *.html *.css *.js *.png *.svg
